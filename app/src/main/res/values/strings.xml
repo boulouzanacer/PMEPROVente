@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">PME-PRO Vente</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (obligatory)</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="title_item_list">Items</string>
+    <string name="title_item_detail">Item Detail</string>
+
+
+    <string name="mode_tarif_text" translatable="false">MODE DE TARIFF</string>
+    <string name="prix_achat">PRIX ACHAT</string>
+    <string name="prix_vente">PRIX VENTE</string>
+    <string name="pledge_mock">$150</string>
+    <string name="pledge_badge" translatable="false">PLEDGE</string>
+    <string name="produit_badge" translatable="false">PRODUIT </string>
+    <string name="reference_badge" translatable="false">REFERENCE </string>
+    <string name="codebarre_badge" translatable="false">CODEBARRE </string>
+    <string name="stock_badge" translatable="false">STOCK </string>
+
+    <string name="pv1" translatable="false">PRIX V1 HT</string>
+    <string name="pv2" translatable="false">PRIX V2 HT</string>
+    <string name="pv3" translatable="false">PRIX V3 HT</string>
+    <string name="tva_badge" translatable="false">TVA</string>
+
+    <string name="pv2_prix">0.00 DA</string>
+    <string name="pv1_prix">0.00 DA</string>
+    <string name="pv3_prix" translatable="false">0.00 DA</string>
+    <string name="tva" translatable="false">0%</string>
+    <string name="title_activity_bon2">ActivityBon2</string>
+    <string name="valide">Valider</string>
+    <string name="product">Produit</string>
+    <string name="quantity">Qty</string>
+    <string name="price">Prix</string>
+</resources>

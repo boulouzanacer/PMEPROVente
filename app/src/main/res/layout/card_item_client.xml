@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/cardview_default_elevation"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:padding="5sp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/clientP_imgv"
+                android:src="@color/primary_dark"
+                android:layout_width="70sp"
+                android:layout_height="70sp" />
+
+            <LinearLayout
+                android:paddingTop="5sp"
+                android:layout_marginLeft="10sp"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/clientid_textv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textAllCaps="true"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:text="000001" />
+
+                <TextView
+                    android:id="@+id/clientname_textv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="10sp"
+                    android:textAllCaps="true"
+                    android:textColor="@color/black"
+                    android:textSize="19dp"
+                    android:text="BOULOUZA NASSER"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/expand_btn"
+
+                    android:layout_width="81dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+
+    </android.support.v7.widget.CardView>
+
+    <com.boulouza.uk2018.pme_provente.adapters.ExpandableLinearLayout
+        android:id="@+id/expandableView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:expandDuration="500">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <LinearLayout
+                android:layout_marginLeft="15sp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/tel_textv"
+                    android:text="  0552725211"
+                    android:typeface="monospace"
+                    android:textSize="20sp"
+                    android:drawableLeft="@mipmap/phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/adresse_textv"
+                    android:layout_marginTop="10sp"
+                    android:layout_marginBottom="10sp"
+                    android:typeface="monospace"
+                    android:textSize="18sp"
+                    android:drawableLeft="@mipmap/home"
+                    android:text="  10500, Cité les HLM, Oran"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+
+                <TextView
+                    android:id="@+id/tarifmode_textv"
+                    android:layout_marginTop="10sp"
+                    android:layout_marginBottom="10sp"
+                    android:drawableLeft="@mipmap/home"
+                    android:typeface="monospace"
+                    android:textSize="20sp"
+                    android:text="  TARRIF 2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </com.boulouza.uk2018.pme_provente.adapters.ExpandableLinearLayout>
+</LinearLayout>
