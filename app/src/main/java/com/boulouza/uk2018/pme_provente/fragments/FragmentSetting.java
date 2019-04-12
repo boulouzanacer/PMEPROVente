@@ -1,11 +1,13 @@
 package com.boulouza.uk2018.pme_provente.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +26,7 @@ import android.widget.TextView;
 import com.boulouza.uk2018.pme_provente.ItemListActivity;
 import com.boulouza.uk2018.pme_provente.R;
 import com.boulouza.uk2018.pme_provente.databases.DATABASE;
+import com.boulouza.uk2018.pme_provente.utils.ScalingActivityAnimator;
 import com.github.ybq.android.spinkit.style.Circle;
 
 import java.sql.Connection;
@@ -40,7 +43,7 @@ import pl.coreorb.selectiondialogs.views.SelectedItemView;
 import static android.content.Context.MODE_PRIVATE;
 
 
-public class FragmentSetting extends Fragment implements IconSelectDialog.OnIconSelectedListener{
+public class FragmentSetting extends Fragment implements IconSelectDialog.OnIconSelectedListener, View.OnClickListener {
 
     private static final String TAG_SELECT_COLOR_DIALOG = "TAG_SELECT_COLOR_DIALOG";
 
@@ -220,8 +223,11 @@ public class FragmentSetting extends Fragment implements IconSelectDialog.OnIcon
 
         //Relative layout
         code_depot_lnr = (LinearLayout) rootView.findViewById(R.id.code_depot_lnr);
+        code_depot_lnr.setOnClickListener(this);
         code_vendeur_lnr = (LinearLayout) rootView.findViewById(R.id.code_vendeur_lnr);
+        code_vendeur_lnr.setOnClickListener(this);
         mode_tarif_lnr = (LinearLayout) rootView.findViewById(R.id.mode_tarif_lnr);
+        mode_tarif_lnr.setOnClickListener(this);
 
         ///////////////////
         SharedPreferences prefs2 = getActivity().getSharedPreferences(PARAMS_PREFS_CODE_DEPOT, MODE_PRIVATE);
@@ -314,9 +320,77 @@ public class FragmentSetting extends Fragment implements IconSelectDialog.OnIcon
                 .show();
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+
+            case R.id.code_depot_lnr:
+                final ScalingActivityAnimator mScalingActivityAnimator = new ScalingActivityAnimator(getContext(), getActivity(), R.id.root_view, R.layout.pop_view);
+                View popView = mScalingActivityAnimator.start();
+                final EditText edited_prix = (EditText) popView.findViewById(R.id.edited_prix);
+                Button mButtonSure = (Button) popView.findViewById(R.id.btn_sure);
+                Button mButtonBack = (Button) popView.findViewById(R.id.btn_cancel);
+
+                edited_prix.setText(code_depot.getText().toString());
+                mButtonBack.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mScalingActivityAnimator.resume();
+                    }
+                });
+
+                mButtonSure.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        code_depot.setText(edited_prix.getText().toString());
+                        SharedPreferences.Editor editor = getContext().getSharedPreferences(PARAMS_PREFS_CODE_DEPOT, MODE_PRIVATE).edit();
+                        editor.putString("CODE_DEPOT", edited_prix.getText().toString());
+                        editor.commit();
+                        mScalingActivityAnimator.resume();
+                    }
+                });
+                break;
+
+            case R.id.code_vendeur_lnr:
+                final ScalingActivityAnimator mScalingActivityAnimator1 = new ScalingActivityAnimator(getContext(), getActivity(), R.id.root_view, R.layout.pop_view);
+                View popView1 = mScalingActivityAnimator1.start();
+                final EditText edited_code_vendeur = (EditText) popView1.findViewById(R.id.edited_prix);
+                Button mButtonSure1 = (Button) popView1.findViewById(R.id.btn_sure);
+                Button mButtonBack1 = (Button) popView1.findViewById(R.id.btn_cancel);
+
+                edited_code_vendeur.setText(code_vendeur.getText().toString());
+                mButtonBack1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mScalingActivityAnimator1.resume();
+                    }
+                });
+
+                mButtonSure1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        code_vendeur.setText(edited_code_vendeur.getText().toString());
+                        SharedPreferences.Editor editor = getContext().getSharedPreferences(PARAMS_PREFS_CODE_DEPOT, MODE_PRIVATE).edit();
+                        editor.putString("CODE_VENDEUR", edited_code_vendeur.getText().toString());
+                        editor.commit();
+                        mScalingActivityAnimator1.resume();
+                    }
+                });
+                break;
+            case R.id.mode_tarif_lnr:
+
+                break;
+
+            case R.id.reset_pda:
+
+                ResetDialog();
+                break;
+        }
+    }
+
     //class to check cnx to FireBird Database
     //====================================
-    public class TestConnection_Setting extends AsyncTask<Void,Void,Boolean> {
+    public class TestConnection_Setting extends AsyncTask<Void,Void,Integer> {
 
         Boolean executed = false;
         String _Server;
@@ -324,6 +398,8 @@ public class FragmentSetting extends Fragment implements IconSelectDialog.OnIcon
         String _Username;
         String _Password;
         Connection con = null;
+        Integer flag = 0;
+        String Error_message = "";
 
         public TestConnection_Setting(String server, String database, String username, String password) {
             super();
@@ -343,7 +419,7 @@ public class FragmentSetting extends Fragment implements IconSelectDialog.OnIcon
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected Integer doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             try {
 
@@ -352,18 +428,21 @@ public class FragmentSetting extends Fragment implements IconSelectDialog.OnIcon
                 Class.forName("org.firebirdsql.jdbc.FBDriver");
                 String sCon = "jdbc:firebirdsql:" + _Server + ":" + _pathDatabase + ".FDB";
                 con = DriverManager.getConnection(sCon, _Username, _Password);
-                executed = true;
+
+                flag = 1;
                 con = null;
 
             }catch (Exception ex ){
                 con = null;
-                Log.e("TRACKKK", "FAILED TO CONNECT WITH SERVER " + ex.getMessage());
+                flag = 2;
+                Log.e("TRACKKK", "ERROR : " + ex.getMessage());
+                Error_message = ex.getMessage();
             }
-            return executed;
+            return flag;
         }
 
         @Override
-        protected void onPostExecute(Boolean aBoolean) {
+        protected void onPostExecute(Integer flag) {
             circle.stop();
             isRunning[0] = false;
             textView.setVisibility(View.GONE);
@@ -375,21 +454,29 @@ public class FragmentSetting extends Fragment implements IconSelectDialog.OnIcon
             editor.putString("password", _Password);
             editor.commit();
 
-            if(aBoolean){
+            if(flag == 1){
+                //Connected
                 View customView = getLayoutInflater().inflate(R.layout.custom_cruton_style, null);
                 Crouton.show(getActivity(), customView);
                 Sound(R.raw.login);
-            }else{
+
+            }else if(flag ==2){
                 Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shakanimation);
                 btntest.startAnimation(shake);
                 Sound(R.raw.error);
-                // Crouton.showText(_context , " Failed to Connect !", Style.ALERT);
+                Crouton.makeText(getActivity(), "Error : " + Error_message, Style.ALERT).show();
             }
-            super.onPostExecute(aBoolean);
+            super.onPostExecute(flag);
         }
     }
     //==================================================
 
+
+    private void ResetDialog() {
+        FragmentManager fm = getFragmentManager();
+        FragmentPasswordResetDialog editNameDialogFragment = FragmentPasswordResetDialog.newInstance("Some Title");
+        editNameDialogFragment.show(fm, "fragment_edit_name");
+    }
 
     // function for playing sound
     public void Sound(int SourceSound){

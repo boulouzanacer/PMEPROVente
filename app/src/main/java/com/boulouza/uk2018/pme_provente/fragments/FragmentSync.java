@@ -28,10 +28,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
+
 import static android.content.Context.MODE_PRIVATE;
 
 
-public class FragmentSync extends Fragment{
+public class FragmentSync extends Fragment implements View.OnClickListener {
 
 
     private String Server;
@@ -64,7 +67,9 @@ public class FragmentSync extends Fragment{
     private void initViews(View rootV) {
 
         Import_bon = (RelativeLayout) rootV.findViewById(R.id.rlt_import_bon);
+        Import_bon.setOnClickListener(this);
         Import_client = (RelativeLayout) rootV.findViewById(R.id.rlt_import_client);
+        Import_client.setOnClickListener(this);
        /* Export_vente = (RelativeLayout) rootV.findViewById(R.id.rlt_export_ventes);
         Export_commande = (RelativeLayout) rootV.findViewById(R.id.rlt_export_commandes);
         Export_inventaire = (RelativeLayout) rootV.findViewById(R.id.rlt_export_inventaires);
@@ -97,17 +102,17 @@ public class FragmentSync extends Fragment{
         return rootView;
     }
 
-
-    public void onRelativeClick(View v) throws ExecutionException, InterruptedException {
-     //   SharedPreferences prefs3 = getActivity().getSharedPreferences(PARAMS_PREFS_IMPORT_EXPORT, MODE_PRIVATE);
+    @Override
+    public void onClick(View v) {
+//   SharedPreferences prefs3 = getActivity().getSharedPreferences(PARAMS_PREFS_IMPORT_EXPORT, MODE_PRIVATE);
         switch (v.getId()){
             case R.id.rlt_import_bon:
                 // 1 check connection
                 // 2 get all transfer bon for this deport
                 // 3 propose those not exist in local database
 
-                 //Check_connection_bon_server_task check_connection = new Check_connection_bon_server_task();
-                 //check_connection.execute();
+                //Check_connection_bon_server_task check_connection = new Check_connection_bon_server_task();
+                //check_connection.execute();
 
                 break;
             case R.id.rlt_import_client:
@@ -183,6 +188,7 @@ public class FragmentSync extends Fragment{
     public class Check_connection_client_server_for_sychronisation_client extends AsyncTask<Void, Integer, Integer> {
         Connection  con;
         Integer flag = 0;
+        String Error_message = "";
 
         public Check_connection_client_server_for_sychronisation_client(){
             SharedPreferences prefs = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
@@ -209,13 +215,10 @@ public class FragmentSync extends Fragment{
                 flag = 1;
             } catch (Exception e) {
                 con = null;
-                if (e.getMessage().contains("Unable to complete network request to host")) {
-                    flag = 2;
-                    Log.e("TRACKKK", "ENABLE TO CONNECT TO SERVER FIREBIRD");
-                } else {
-                    //not executed with problem in the sql statement
-                    flag = 3;
-                }
+                flag = 2;
+                Log.e("TRACKKK", "ERROR : " + e.getMessage());
+                Error_message = e.getMessage();
+
             }
             return flag;
         }
@@ -231,12 +234,8 @@ public class FragmentSync extends Fragment{
 
             }else if(integer ==2){
                 mProgressDialog_Free.dismiss();
-                Toast.makeText(getActivity(), "probleme de connexion, vérifier les parametres", Toast.LENGTH_SHORT).show();
-            }else {
-                mProgressDialog_Free.dismiss();
-                Toast.makeText(getActivity(), "probleme fatal", Toast.LENGTH_SHORT).show();
+                Crouton.makeText(getActivity(), "Error : " + Error_message, Style.ALERT).show();
             }
-
             super.onPostExecute(integer);
         }
 
@@ -250,6 +249,7 @@ public class FragmentSync extends Fragment{
         Integer flag = 0;
         int compt = 0;
         int allrows=0;
+        String Error_message = "";
 
         public Import_client_from_server_task(){
 
@@ -366,19 +366,14 @@ public class FragmentSync extends Fragment{
                 if (executed) {
                     flag = 1;
                 }else{
-                    flag = 3;
+                    flag = 2;
                 }
 
             } catch (Exception e) {
                 con = null;
-                Log.e("TRACKKK", "ERROR WHEN EXECUTING LOAD PRODUITS, LIST DEPOT2 AND DEPOT1 ASYNCRON TASK " + e.getMessage());
-                if (e.getMessage().contains("Unable to complete network request to host")) {
-                    flag = 2;
-                    Log.e("TRACKKK", "ENABLE TO CONNECT TO SERVER FIREBIRD");
-                } else {
-                    //not executed with problem in the sql statement
-                    flag = 3;
-                }
+                flag = 2;
+                Log.e("TRACKKK", "ERROR : " + e.getMessage());
+                Error_message = e.getMessage();
             }
 
             return flag;
@@ -392,8 +387,15 @@ public class FragmentSync extends Fragment{
 
         @Override
         protected void onPostExecute(Integer integer) {
-            mProgressDialog.dismiss();
             super.onPostExecute(integer);
+
+            mProgressDialog.dismiss();
+            if(integer == 1){
+                //completed
+                Crouton.makeText(getActivity(), "Importation clients successfull !", Style.CONFIRM).show();
+            }else if(integer ==2){
+                Crouton.makeText(getActivity(), "Error : " + Error_message, Style.ALERT).show();
+            }
         }
 
     }
@@ -403,6 +405,7 @@ public class FragmentSync extends Fragment{
     public class Check_connection_produit_server_for_sychronisation_produit extends AsyncTask<Void, Integer, Integer> {
         Connection  con;
         Integer flag = 0;
+        String Error_message = "";
 
         public Check_connection_produit_server_for_sychronisation_produit(){
             SharedPreferences prefs = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
@@ -431,14 +434,9 @@ public class FragmentSync extends Fragment{
 
             } catch (Exception e) {
                 con = null;
-                if (e.getMessage().contains("Unable to complete network request to host")) {
-                    flag = 2;
-                    Log.e("TRACKKK", "ENABLE TO CONNECT TO SERVER FIREBIRD");
-
-                } else {
-                    //not executed with problem in the sql statement
-                    flag = 3;
-                }
+                flag = 2;
+                Log.e("TRACKKK", "ERROR : " + e.getMessage());
+                Error_message = e.getMessage();
             }
 
             return flag;
@@ -448,17 +446,16 @@ public class FragmentSync extends Fragment{
         @Override
         protected void onPostExecute(Integer integer) {
             if(integer == 1){
-                // get all transfert bon of this depot
+                // get products from firebird database
                 Import_produit_from_server_task produit_task = new Import_produit_from_server_task();
                 produit_task.execute();
                 mProgressDialog_Free.dismiss();
+
             }else if(integer ==2){
                 mProgressDialog_Free.dismiss();
-                Toast.makeText(getActivity(), "probleme de connexion, vérifier les parametres", Toast.LENGTH_SHORT).show();
-            }else {
-                mProgressDialog_Free.dismiss();
-                Toast.makeText(getActivity(), "probleme fatal", Toast.LENGTH_SHORT).show();
+                Crouton.makeText(getActivity(), "Error : " + Error_message, Style.ALERT).show();
             }
+
             super.onPostExecute(integer);
         }
 
@@ -472,6 +469,7 @@ public class FragmentSync extends Fragment{
         Integer flag = 0;
         int compt = 0;
         int allrows=0;
+        String Error_message = "";
 
         public Import_produit_from_server_task(){
 
@@ -623,14 +621,9 @@ public class FragmentSync extends Fragment{
 
             } catch (Exception e) {
                 con = null;
-                Log.e("TRACKKK", "ERROR WHEN EXECUTING LOAD PRODUITS, LIST DEPOT2 AND DEPOT1 ASYNCRON TASK " + e.getMessage());
-                if (e.getMessage().contains("Unable to complete network request to host")) {
-                    flag = 2;
-                    Log.e("TRACKKK", "ENABLE TO CONNECT TO SERVER FIREBIRD");
-                } else {
-                    //not executed with problem in the sql statement
-                    flag = 3;
-                }
+                flag = 2;
+                Log.e("TRACKKK", "ERROR : " + e.getMessage());
+                Error_message = e.getMessage();
             }
 
             return flag;
@@ -646,8 +639,14 @@ public class FragmentSync extends Fragment{
 
         @Override
         protected void onPostExecute(Integer integer) {
-            mProgressDialog.dismiss();
             super.onPostExecute(integer);
+            mProgressDialog.dismiss();
+            if(integer == 1){
+                //completed
+                Crouton.makeText(getActivity(), "Importation products successfull !", Style.CONFIRM).show();
+            }else if(integer ==2){
+                Crouton.makeText(getActivity(), "Error : " + Error_message, Style.ALERT).show();
+            }
         }
     }
 
