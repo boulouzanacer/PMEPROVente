@@ -21,20 +21,20 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  * Created by UK2016 on 12/06/2017.
  */
 
-public class FragmentPasswordReset extends DialogFragment {
+public class FragmentPasswordResetDialog extends DialogFragment {
 
     private EditText mPassword;
     private Button reset;
     private DATABASE controller;
 
-    public FragmentPasswordReset() {
+    public FragmentPasswordResetDialog() {
         // Empty constructor is required for DialogFragment
         // Make sure not to add arguments to the constructor
         // Use `newInstance` instead as shown below
     }
 
-    public static FragmentPasswordReset newInstance(String title) {
-        FragmentPasswordReset frag = new FragmentPasswordReset();
+    public static FragmentPasswordResetDialog newInstance(String title) {
+        FragmentPasswordResetDialog frag = new FragmentPasswordResetDialog();
         Bundle args = new Bundle();
         args.putString("title", title);
         frag.setArguments(args);
@@ -44,8 +44,7 @@ public class FragmentPasswordReset extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_password_reset, container);
-
+        return inflater.inflate(R.layout.fragment_password_resetdialog, container);
     }
 
     @Override

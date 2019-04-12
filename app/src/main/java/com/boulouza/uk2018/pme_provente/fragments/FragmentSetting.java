@@ -473,7 +473,7 @@ public class FragmentSetting extends Fragment implements IconSelectDialog.OnIcon
 
     private void ResetDialog() {
         FragmentManager fm = getFragmentManager();
-        FragmentPasswordReset editNameDialogFragment = FragmentPasswordReset.newInstance("Some Title");
+        FragmentPasswordResetDialog editNameDialogFragment = FragmentPasswordResetDialog.newInstance("Some Title");
         editNameDialogFragment.show(fm, "fragment_edit_name");
     }
 
