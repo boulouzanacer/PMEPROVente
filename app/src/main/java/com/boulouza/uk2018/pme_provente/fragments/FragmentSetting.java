@@ -1,7 +1,6 @@
 package com.boulouza.uk2018.pme_provente.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
@@ -474,7 +473,7 @@ public class FragmentSetting extends Fragment implements IconSelectDialog.OnIcon
 
     private void ResetDialog() {
         FragmentManager fm = getFragmentManager();
-        FragmentPasswordResetDialog editNameDialogFragment = FragmentPasswordResetDialog.newInstance("Some Title");
+        FragmentPasswordReset editNameDialogFragment = FragmentPasswordReset.newInstance("Some Title");
         editNameDialogFragment.show(fm, "fragment_edit_name");
     }
 
