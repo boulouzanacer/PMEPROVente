@@ -70,6 +70,8 @@ public class FragmentSync extends Fragment implements View.OnClickListener {
         Import_bon.setOnClickListener(this);
         Import_client = (RelativeLayout) rootV.findViewById(R.id.rlt_import_client);
         Import_client.setOnClickListener(this);
+        Import_produit = (RelativeLayout) rootV.findViewById(R.id.rlt_import_produit);
+        Import_produit.setOnClickListener(this);
        /* Export_vente = (RelativeLayout) rootV.findViewById(R.id.rlt_export_ventes);
         Export_commande = (RelativeLayout) rootV.findViewById(R.id.rlt_export_commandes);
         Export_inventaire = (RelativeLayout) rootV.findViewById(R.id.rlt_export_inventaires);
@@ -508,7 +510,7 @@ public class FragmentSync extends Fragment implements View.OnClickListener {
 
                 publishProgress(1);
 
-                if(code_depot.toString().equals("000000")){
+                if(code_depot.equals("000000")){
 
                     String sql12 = "SELECT  COUNT(*) FROM PRODUIT";
                     ResultSet rs12 = stmt.executeQuery(sql12);

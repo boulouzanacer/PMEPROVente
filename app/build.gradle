@@ -39,12 +39,15 @@ dependencies {
         // exclusion is not necessary, but generally a good idea.
         exclude group: 'com.google.android', module: 'support-v4'
     }
+
     implementation 'com.baoyz.swipemenulistview:library:1.3.0'
     implementation 'pl.coreorb:selection-dialogs:0.9.1'
+
     // externel librery
     implementation project(':lib_badge')
     implementation project(':sweet_alert_dialog_library')
     implementation project(path: ':SpinKitLib')
+
     // /Libs
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

@@ -25,7 +25,7 @@
                     android:layout_width="110dp"
                     android:layout_height="110dp"
                     android:padding="5dp"
-                    android:src="@mipmap/client" />
+                    android:src="@mipmap/no_image_icon" />
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -48,6 +48,7 @@
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
                         android:textSize="20dp"
+                        android:textColor="@color/black"
                         android:layout_marginStart="10dp"
                         android:text="sdfsfsfsfgsgfdgfsfsdf" />
 
@@ -74,6 +75,7 @@
                                 android:id="@+id/codebarre_textv"
                                 android:textSize="20dp"
                                 android:textStyle="bold"
+                                android:textColor="@color/black"
                                 android:text="123000045824"
                                 android:layout_marginStart="10dp"
                                 android:layout_width="wrap_content"
@@ -156,7 +158,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_below="@id/content_avatar_title"
                     android:text="235456557456745"
-                    android:textColor="@color/mainTextColor"
+                    android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 

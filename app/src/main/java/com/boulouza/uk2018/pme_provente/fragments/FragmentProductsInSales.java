@@ -60,19 +60,6 @@ public class FragmentProductsInSales extends Fragment implements ClickInterface 
         super.onResume();
 
         controller = new DATABASE(getActivity());
-        PostData_Produit produit = new PostData_Produit();
-        produit.code_barre = "3456724567864";
-        produit.produit = "Marlhboro";
-        produit.pa_ht = "100.34";
-        produit.pv1_ht = "230.00";
-        produit.pv2_ht = "200.00";
-        produit.pv3_ht = "150.00";
-        produit.stock = "40";
-        produit.tva = "0.00";
-        produit.exist = false;
-        produit.ref_produit = "2345678945644";
-
-        controller.Insert_into_produit(produit);
         // Set title bar
         // getActivity().setActionBarTitle("Produits");
 

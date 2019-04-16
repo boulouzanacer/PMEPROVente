@@ -1,5 +1,7 @@
 package com.boulouza.uk2018.pme_provente.adapters;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -39,7 +41,11 @@ public class RecyclerViewAdapterProducts extends RecyclerView.Adapter<RecyclerVi
         holder.ProduitName_TextV.setText(produits.get(position).produit);
         holder.CodeBarre_TextV.setText(produits.get(position).code_barre);
         holder.stock_TextV.setText(produits.get(position).stock);
-        holder.PicProduit_ImageV.setImageResource(R.drawable.ic_launcher_background);
+        if(produits.get(position).photo == null){
+            holder.PicProduit_ImageV.setImageResource(R.mipmap.no_image_icon);
+        }else {
+            holder.PicProduit_ImageV.setImageBitmap(getImage(produits.get(position).photo));
+        }
 
         //Expanded
         holder.REFERENCE_expandedTextV.setText(produits.get(position).ref_produit);
@@ -66,6 +72,11 @@ public class RecyclerViewAdapterProducts extends RecyclerView.Adapter<RecyclerVi
 
     public void setData(ArrayList<PostData_Produit> produits) {
         this.produits = produits;
+    }
+
+    // convert from byte array to bitmap
+    public static Bitmap getImage(byte[] image) {
+        return BitmapFactory.decodeByteArray(image, 0, image.length);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -101,6 +112,7 @@ public class RecyclerViewAdapterProducts extends RecyclerView.Adapter<RecyclerVi
 
             }
         };
+
         ViewHolder(View itemView) {
             super(itemView);
 
@@ -140,5 +152,6 @@ public class RecyclerViewAdapterProducts extends RecyclerView.Adapter<RecyclerVi
                 }
             });
         }
+
     }
 }

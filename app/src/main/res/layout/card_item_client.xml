@@ -20,7 +20,7 @@
 
             <ImageView
                 android:id="@+id/clientP_imgv"
-                android:src="@color/primary_dark"
+                android:src="@mipmap/client"
                 android:layout_width="70sp"
                 android:layout_height="70sp" />
 
@@ -84,7 +84,7 @@
 
 
             <LinearLayout
-                android:layout_marginLeft="15sp"
+                android:layout_marginLeft="40sp"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -95,7 +95,7 @@
                     android:text="  0552725211"
                     android:typeface="monospace"
                     android:textSize="20sp"
-                    android:drawableLeft="@mipmap/phone"
+                    android:drawableLeft="@mipmap/phone_png"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 

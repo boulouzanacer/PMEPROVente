@@ -2,6 +2,8 @@ package com.boulouza.uk2018.pme_provente.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,8 @@ import com.boulouza.uk2018.pme_provente.postData.ExpandListener;
 import com.boulouza.uk2018.pme_provente.postData.PostData_Client;
 
 import java.util.ArrayList;
+
+import cn.nekocode.badge.BadgeDrawable;
 
 public class RecyclerViewAdapterClients extends RecyclerView.Adapter<RecyclerViewAdapterClients.ViewHolder> {
     private ArrayList<PostData_Client> clients;
@@ -37,25 +41,47 @@ public class RecyclerViewAdapterClients extends RecyclerView.Adapter<RecyclerVie
         //collapssed
         holder.Client_C_TextV.setText(clients.get(position).code_client);
         holder.Client_N_TextV.setText(clients.get(position).client);
-        holder.Client_Pic_ImageV.setImageResource(R.drawable.ic_launcher_background);
+        holder.Client_Pic_ImageV.setImageResource(R.mipmap.client_pic);
 
         //Expanded
-        holder.Tel_expandedTextV.setText(clients.get(position).tel);
-        holder.Adress_expandedTextV.setText(clients.get(position).adresse);
+        holder.Tel_expandedTextV.setText("  " + clients.get(position).tel);
+        holder.Adress_expandedTextV.setText("  " +clients.get(position).adresse);
 
         if(clients.get(position).mode_tarif != null){
             if(clients.get(position).mode_tarif.equals("1")){
-                holder.TarrifMode_expandedTextV.setText("TARRIF 1");
+                final BadgeDrawable drawable = new BadgeDrawable.Builder()
+                                .type(BadgeDrawable.TYPE_WITH_TWO_TEXT)
+                                .badgeColor(0xffCC9999)
+                                .text1("TARIF MODE")
+                                .text2("TARIFF 1")
+                                .build();
+                SpannableString spannableString = new SpannableString(TextUtils.concat("  ", drawable.toSpannable()));
+                holder.TarrifMode_expandedTextV.setText(spannableString);
+
             }else if(clients.get(position).mode_tarif.equals("2")){
-                holder.TarrifMode_expandedTextV.setText("TARRIF 2");
+                final BadgeDrawable drawable = new BadgeDrawable.Builder()
+                                .type(BadgeDrawable.TYPE_WITH_TWO_TEXT)
+                                .badgeColor(0xffCC9999)
+                                .text1("TARIF MODE")
+                                .text2("TARIFF 2")
+                                .build();
+                SpannableString spannableString = new SpannableString(TextUtils.concat("  ", drawable.toSpannable()));
+                holder.TarrifMode_expandedTextV.setText(spannableString);
+
             }else{
-                holder.TarrifMode_expandedTextV.setText("3");
+                final BadgeDrawable drawable = new BadgeDrawable.Builder()
+                                .type(BadgeDrawable.TYPE_WITH_TWO_TEXT)
+                                .badgeColor(0xffCC9999)
+                                .text1("TARIF MODE")
+                                .text2("TARIFF 3")
+                                .build();
+                SpannableString spannableString = new SpannableString(TextUtils.concat("  ", drawable.toSpannable()));
+                holder.TarrifMode_expandedTextV.setText(spannableString);
+
             }
         }else{
             holder.TarrifMode_expandedTextV.setText("?");
         }
-
-
 
         if(clients.get(position).isExpanded()){
             holder.expandableView.setVisibility(View.VISIBLE);
